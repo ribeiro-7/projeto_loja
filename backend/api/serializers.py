@@ -59,3 +59,34 @@ class EnderecoDeEntregaSerializer(serializers.Serializer):
     class Meta:
         model = EnderecoDeEntrega
         fields = '__all__'
+
+class ItemPedidoSerializer(serializers.Serializer):
+    class Meta:
+        model = ItemPedido
+        fields = '__all__'
+
+class PedidoSerializer(serializers.Serializer):
+    itensPedidos = serializers.SerializerMethodField(read_only=True)
+    enderecoDeEntrega = serializers.SerializerMethodField(read_only=True)
+    User = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = Pedido
+        fields = '__all__'
+
+    def get_itensPedidos(self, obj):
+        itens = obj.itemPedido_set.all()
+        serializer = ItemPedidoSerializer(itens, many=True)
+        return serializer.data
+    
+    def get_enderecoDeEntrega(self, obj):
+        try:
+            endereco = EnderecoDeEntregaSerializer(obj.enderecoDeEntrega, many=False).data
+        except:
+            endereco = False
+        return endereco
+    
+    def get_user(self, obj):
+        itens = obj.user
+        serializer = UserSerializer(itens, many=True)
+        return serializer.data
