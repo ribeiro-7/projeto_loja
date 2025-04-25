@@ -46,3 +46,27 @@ class Pedido(models.Model):
 
     def __str__(self):
         return str(self.criadoEm)
+
+class ItemPedido(models.Model):
+    produto = models.ForeignKey(Produto, on_delete=models.CASCADE, null=True)
+    pedido = models.ForeignKey(Pedido, on_delete=models.SET_NULL, null=True)
+    nome = models.CharField(max_length=200, null=True, blank=True)
+    qtd = models.IntegerField(null=True, blank=True, default=0)
+    preco = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
+    imagem = models.CharField(max_length=200,null=True,blank=True)
+    _id = models.AutoField(primary_key=True, editable=False)
+
+    def __str__(self):
+        return str(self.nome)
+    
+class EnderecoDeEntrega(models.Model):
+    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, null=True, blank=True)
+    endereco = models.CharField(max_length=200, null=True, blank=True)
+    cidade = models.CharField(max_length=200, null=True, blank=True)
+    cep = models.CharField(max_length=200, null=True, blank=True)
+    pais = models.CharField(max_length=200, null=True, blank=True)
+    precoFrete = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
+    _id = models.AutoField(primary_key=True, editable=False)
+
+    def __str__(self):
+        return str(self.endereco)
