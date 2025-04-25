@@ -60,7 +60,7 @@ class ItemPedido(models.Model):
         return str(self.nome)
     
 class EnderecoDeEntrega(models.Model):
-    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, null=True, blank=True)
+    pedido = models.OneToOneField(Pedido, on_delete=models.CASCADE, null=True, blank=True)
     endereco = models.CharField(max_length=200, null=True, blank=True)
     cidade = models.CharField(max_length=200, null=True, blank=True)
     cep = models.CharField(max_length=200, null=True, blank=True)
